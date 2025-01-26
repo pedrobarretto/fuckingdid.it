@@ -15,7 +15,6 @@ export default function Login() {
   async function signInWithGoogle() {
     setIsGoogleLoading(true);
     try {
-      console.log(window.location.origin);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -24,16 +23,18 @@ export default function Login() {
       });
 
       if (error) {
+        console.log(error);
         throw error;
       }
     } catch (error) {
       console.log(error);
+    } finally {
       setIsGoogleLoading(false);
     }
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center min-h-screen">
       <form
         className="w-full max-w-sm p-6 space-y-6 bg-white shadow-lg rounded-lg"
         method="post"

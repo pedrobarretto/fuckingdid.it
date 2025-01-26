@@ -1,19 +1,36 @@
+'use server';
+
 import { Button } from '@/components/ui/button';
-import { handleLogOut } from './actions';
 
-export default function Home() {
+export default async function Home() {
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-[#333c4c] font-sans text-center">
-      <h1 className="text-5xl font-bold mb-4">
-        <span className="text-orange-500">FuckingDid.it</span>
-      </h1>
-      <p className="text-xl mb-6">
-        Coming soon. Because sometimes, all you need is a little nudge to get it
-        done.
-      </p>
-      <p className="text-s">Stay tuned for the launch! 🚀</p>
+    <div className="text-[#333c4c] pr-96 pl-96 p-24 flex justify-center items-center flex-col">
+      <section className="text-left flex justify-center items-center">
+        <span className="font-semibold text-5xl">
+          Stop procrastinating. <br />
+          {/* Gamify your routine. <br /> */}
+          Just {<span className="text-orange-500">fucking do it.</span>}
+        </span>
+      </section>
 
-      <Button onClick={handleLogOut}>Logout</Button>
+      <section className="text-left flex justify-center items-center mt-28">
+        <span className="font-semibold text-2xl">
+          1. Create your account. <br />
+          2. Choose an avatar. <br />
+          3. Earn/loose xp answering:
+        </span>
+      </section>
+
+      <section className="flex justify-center items-center flex-col gap-4 bg-white p-10 w-2/5 rounded-xl mt-5">
+        <span className="font-semibold">
+          Did you {<span className="text-orange-500">fucking did</span>} what
+          you planned on doing?
+        </span>
+        <div className="flex gap-2">
+          <Button>Yes</Button>
+          <Button>No</Button>
+        </div>
+      </section>
     </div>
   );
 }
