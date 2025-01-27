@@ -4,11 +4,10 @@ import { Button } from '@/components/ui/button';
 
 export default async function Home() {
   return (
-    <div className="text-[#333c4c] pr-96 pl-96 p-24 flex justify-center items-center flex-col">
+    <div className="text-[#333c4c] flex justify-center items-center flex-col">
       <section className="text-left flex justify-center items-center">
         <span className="font-semibold text-5xl">
           Stop procrastinating. <br />
-          {/* Gamify your routine. <br /> */}
           Just {<span className="text-orange-500">fucking do it.</span>}
         </span>
       </section>
