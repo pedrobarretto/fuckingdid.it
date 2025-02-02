@@ -19,16 +19,18 @@ import {
 import { useForm } from 'react-hook-form';
 import { LoginFormData, loginSchema } from './loginSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { GenericModal } from '@/components/modal/GenericModal';
+import ConfettiPortal from '@/components/effects/ConfettiPortal';
 
 export default function Login() {
   const supabase = createClient();
   const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false);
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
   });
 
@@ -44,18 +46,18 @@ export default function Login() {
 
       if (error) {
         toast({
-          title: 'Desculpe, ocorreu um erro!',
+          title: 'Sorry, an error occurred!',
           description:
-            'Ocorreu um erro ao realizar login, tente novamente mais tarde.',
+            'An error occurred while logging in. Please try again later.',
           variant: 'destructive',
         });
       }
     } catch (error) {
       console.error(error);
       toast({
-        title: 'Desculpe, ocorreu um erro!',
+        title: 'Sorry, an error occurred!',
         description:
-          'Ocorreu um erro ao realizar login, tente novamente mais tarde.',
+          'An error occurred while logging in. Please try again later.',
         variant: 'destructive',
       });
     } finally {
@@ -64,34 +66,17 @@ export default function Login() {
   }
 
   async function handleLogin(formData: LoginFormData) {
-    try {
-      const res = await login(formData);
-      if (res.success) {
-        return redirect('/home');
-      }
-      if (res.error === 'invalid_credentials') {
-        toast({
-          title: 'Credenciais incorretas!',
-          description: 'Email ou senha estão incorretos.',
-          variant: 'destructive',
-        });
-      } else {
-        toast({
-          title: 'Desculpe, ocorreu um erro!',
-          description:
-            'Ocorreu um erro ao realizar login, tente novamente mais tarde.',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: 'Desculpe, ocorreu um erro!',
-        description:
-          'Ocorreu um erro ao realizar login, tente novamente mais tarde.',
-        variant: 'destructive',
-      });
+    const res = await login(formData);
+    if (res.success) {
+      return setIsOpen(true);
     }
+
+    toast({
+      title: 'Sorry, an error occurred!',
+      description:
+        'An error occurred while logging in. Please try again later.',
+      variant: 'destructive',
+    });
   }
 
   return (
@@ -119,20 +104,6 @@ export default function Login() {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input {...field} type="password" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <div className="flex flex-col gap-4">
             <Button
               variant="default"
@@ -142,7 +113,7 @@ export default function Login() {
               {form.formState.isSubmitting && (
                 <Loader2 className="size-4 animate-spin" />
               )}
-              Log in
+              Send magic link
             </Button>
             <Button
               type="button"
@@ -199,6 +170,24 @@ export default function Login() {
           </div>
         </form>
       </Form>
+
+      <GenericModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        title="Magic Link sent to your email!"
+      >
+        <>
+          <span>
+            Now, please <strong>check your email</strong>, click the magic link,
+            and <strong className="text-orange-500">fucking log in!</strong>
+          </span>
+          <span className="text-gray-500 font-normal">
+            You can close this page now.
+          </span>
+        </>
+      </GenericModal>
+
+      {isOpen && <ConfettiPortal />}
     </div>
   );
 }

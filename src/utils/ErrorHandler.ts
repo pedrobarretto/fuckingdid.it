@@ -12,6 +12,8 @@ type Err = {
 const ERRORS_MESSAGE = {
   UNKNOWN_ERROR: 'Desculpe, ocorreu um erro. Por favor, entrar em contato!',
   invalid_credentials: 'Credenciais inválidas',
+  email_exists: 'email_exists',
+  over_email_send_rate_limit: 'over_email_send_rate_limit',
 };
 
 export type Resolve<T> = Ok<T> | Err;

@@ -1,5 +1,6 @@
 'use server';
 
+import FirstLoginModal from '@/components/modal/FirstLoginModal';
 import { Button } from '@/components/ui/button';
 
 export default async function Home() {
@@ -30,6 +31,8 @@ export default async function Home() {
           <Button>No</Button>
         </div>
       </section>
+
+      <FirstLoginModal />
     </div>
   );
 }

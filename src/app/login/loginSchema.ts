@@ -2,18 +2,15 @@ import { z } from 'zod';
 
 export const loginSchema = z.object({
   email: z
-    .string({ required_error: 'Email é obrigatório' })
-    .min(1, { message: 'Email é obrigatório' })
+    .string({ required_error: 'Please, provide your login email' })
+    .min(1, { message: 'Please, provide your login email' })
     .refine(
       (email) =>
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
           email
         ),
-      { message: 'Email inválido' }
+      { message: 'Invalid email' }
     ),
-  password: z
-    .string({ required_error: 'Senha é obrigatório' })
-    .min(1, { message: 'Senha é obrigatório' }),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;

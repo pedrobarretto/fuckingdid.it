@@ -7,15 +7,15 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
 
   // Get the authorization code and the 'next' redirect path
-  const code = searchParams.get('code');
-
-  if (code) {
+  const token_hash = searchParams.get('token_hash');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const type: any = searchParams.get('type');
+  if (token_hash && type) {
     // Create a Supabase client
     const supabase = await createClient();
 
     // Exchange the code for a session
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-
+    const { error } = await supabase.auth.verifyOtp({ token_hash, type });
     if (!error) {
       // If successful, redirect to the 'next' path or home
       return NextResponse.redirect(`${origin}/home`);
