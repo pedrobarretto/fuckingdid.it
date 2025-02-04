@@ -34,9 +34,22 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
   );
 
   const handleCreateGoal = async () => {
+    if (!question.length || !avatar.code || !avatar.emoji) return;
     setIsLoading(true);
     await createGoal({ avatar: avatar.code, question });
     setReleaseConfeti(true);
+
+    const yeah = new Audio('/sounds/yeah.mp3');
+    const caprio = new Audio('/sounds/dicaprio-line.mp3');
+    caprio.volume = 1;
+    yeah.volume = 0.2;
+    caprio.play().catch((error) => {
+      console.error('Erro ao tocar o som:', error);
+    });
+    yeah.play().catch((error) => {
+      console.error('Erro ao tocar o som:', error);
+    });
+
     setIsLoading(false);
   };
 
@@ -102,7 +115,9 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
           <Button
             onClick={handleCreateGoal}
             className="bg-orange-500 text-white hover:bg-orange-600 font-semibold"
-            disabled={isLoading}
+            // disabled={
+            //   isLoading || !question.length || !avatar.code || !avatar.emoji
+            // }
           >
             {isLoading && <Loader2 className="size-4 animate-spin" />} Create
             Goal
@@ -112,7 +127,9 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
         <div className="mt-6">
           <Card className="p-6 rounded-xl shadow-md">
             <div className="flex items-center gap-4">
-              <span className="text-4xl">{avatar.emoji || '😀'}</span>
+              <span className="text-4xl">
+                {avatar.emoji || emoji.get(':question:')}
+              </span>
               <div className="flex-1">
                 <p className="font-bold text-lg">
                   {question || 'Your goal question will appear here'}

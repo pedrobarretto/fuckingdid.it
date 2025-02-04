@@ -6,13 +6,24 @@ import { redirect } from 'next/navigation';
 import BrushLine from '../../assets/brush-line.svg';
 import { GoalsContainer } from './_components/GoalsContainer';
 
+function getGreeting() {
+  const hour = new Date().getHours();
+
+  if (hour < 12) {
+    return 'Good morning';
+  } else if (hour < 18) {
+    return 'Good afternoon';
+  } else {
+    return 'Good evening';
+  }
+}
+
 export default async function HomePage() {
   const db = await createClient();
   const { data } = await db.auth.getUser();
   if (!data.user) redirect('/login');
-  console.log(data.user);
   const goals = await db.from('goals').select('*').eq('user_id', data.user.id);
-  console.log('goals: ', goals);
+  const greeting = getGreeting();
 
   const { name, full_name, picture, avatar_url } =
     data.user.user_metadata || {};
@@ -23,7 +34,9 @@ export default async function HomePage() {
     <div className="mx-auto max-w-2xl px-6 sm:px-8 lg:px-12 w-full">
       <div className="flex flex-row justify-between items-center mt-20 mb-10">
         <div className="flex flex-col">
-          <span>Good afternoon, {username}!</span>
+          <span>
+            {greeting}, {username}!
+          </span>
           <span className="font-bold text-orange-500">
             Let&apos;s fucking do it!
           </span>
