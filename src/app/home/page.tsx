@@ -32,7 +32,7 @@ export default async function HomePage() {
 
   return (
     <div className="mx-auto max-w-2xl px-6 sm:px-8 lg:px-12 w-full">
-      <div className="flex flex-row justify-between items-center mt-20 mb-10">
+      <div className="flex flex-row justify-between items-center mt-14 mb-10">
         <div className="flex flex-col">
           <span>
             {greeting}, {username}!

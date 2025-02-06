@@ -16,6 +16,9 @@ export type Goal = {
   updated_at: string;
   user_id: string;
   xp: number;
+  level: number;
+  week_frequency: number;
+  xp_by_answer: number;
 };
 
 export type Database = {
@@ -32,17 +35,23 @@ export type Database = {
           updated_at: string;
           user_id: string;
           xp: number;
+          level: number;
+          week_frequency: number;
+          xp_by_answer: number;
         };
         Insert: {
-          avatar?: string;
+          avatar: string;
           created_at?: string;
           days_streaks?: number;
           group_id?: string | null;
           id?: number;
-          question?: string;
+          question: string;
           updated_at?: string;
           user_id?: string;
           xp?: number;
+          level?: number;
+          week_frequency: number;
+          xp_by_answer: number;
         };
         Update: {
           avatar?: string;
@@ -54,6 +63,9 @@ export type Database = {
           updated_at?: string;
           user_id?: string;
           xp?: number;
+          level?: number;
+          week_frequency: number;
+          xp_by_answer: number;
         };
         Relationships: [];
       };

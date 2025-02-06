@@ -23,7 +23,7 @@ export function GenericModal({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle className="text-orange-500">{title}</DialogTitle>
         </DialogHeader>
         {children}
       </DialogContent>

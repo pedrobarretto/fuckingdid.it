@@ -9,6 +9,10 @@ import { Card } from '@/components/ui/card';
 import { Loader2, Undo2 } from 'lucide-react';
 import { createGoal } from '../actions';
 import ConfettiPortal from '@/components/effects/ConfettiPortal';
+import { GenericModal } from '@/components/modal/GenericModal';
+import { redirect } from 'next/navigation';
+import { GoalsPerWeek } from './GoalsPerWeek';
+import { useReward } from 'react-rewards';
 
 interface CreateGoalFormProps {
   onCancel: () => void;
@@ -20,6 +24,12 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
   const [avatar, setAvatar] = useState({ code: '', emoji: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [releaseConfeti, setReleaseConfeti] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<number>(3);
+  const [xp, setXp] = useState(0);
+  const [level, setLevel] = useState(0);
+  const { reward } = useReward('rewardId', 'confetti');
+  const xpPerTask = Math.floor(100 / selected);
 
   const emojiArray = Object.entries(emojilib).map(([emojiKey, keywords]) => {
     const code = keywords[0];
@@ -36,7 +46,13 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
   const handleCreateGoal = async () => {
     if (!question.length || !avatar.code || !avatar.emoji) return;
     setIsLoading(true);
-    await createGoal({ avatar: avatar.code, question });
+    await createGoal({
+      avatar: avatar.emoji,
+      question,
+      week_frequency: selected,
+      xp_by_answer: xpPerTask,
+    });
+    setIsOpen(true);
     setReleaseConfeti(true);
 
     const yeah = new Audio('/sounds/yeah.mp3');
@@ -44,13 +60,31 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
     caprio.volume = 1;
     yeah.volume = 0.2;
     caprio.play().catch((error) => {
-      console.error('Erro ao tocar o som:', error);
+      console.error('Error when play sound: ', error);
     });
     yeah.play().catch((error) => {
-      console.error('Erro ao tocar o som:', error);
+      console.error('Error when play sound: ', error);
     });
 
     setIsLoading(false);
+  };
+
+  const handleDemoYes = () => {
+    setTimeout(() => {
+      reward();
+    }, 500);
+    const sogra = new Audio('sounds/sogra.mp3');
+    sogra.play().catch((error) => {
+      console.error('Error when play sound: ', error);
+    });
+
+    const newXp = xp + xpPerTask;
+    if (newXp >= 96) {
+      setLevel(level + 1);
+      setXp(0);
+    } else {
+      setXp(newXp);
+    }
   };
 
   return (
@@ -112,12 +146,14 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
             </div>
           </div>
 
+          <GoalsPerWeek selected={selected} setSelected={setSelected} />
+
           <Button
             onClick={handleCreateGoal}
             className="bg-orange-500 text-white hover:bg-orange-600 font-semibold"
-            // disabled={
-            //   isLoading || !question.length || !avatar.code || !avatar.emoji
-            // }
+            disabled={
+              isLoading || !question.length || !avatar.code || !avatar.emoji
+            }
           >
             {isLoading && <Loader2 className="size-4 animate-spin" />} Create
             Goal
@@ -127,32 +163,46 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
         <div className="mt-6">
           <Card className="p-6 rounded-xl shadow-md">
             <div className="flex items-center gap-4">
-              <span className="text-4xl">
+              <span className="text-7xl duration-1000 hover:animate-wiggle hover:cursor-pointer">
                 {avatar.emoji || emoji.get(':question:')}
               </span>
               <div className="flex-1">
-                <p className="font-bold text-lg">
+                <p className="font-bold text-lg text-orange-500">
                   {question || 'Your goal question will appear here'}
                 </p>
                 <div className="mt-2">
                   <div className="w-full bg-gray-300 rounded-full h-2">
                     <div
-                      className="bg-orange-500 h-2 rounded-full"
-                      style={{ width: '50%' }}
+                      className="bg-orange-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${xp}%` }}
                     ></div>
+                  </div>
+                  <div className="mt-2">
+                    <span className="text-sm text-white p-1 bg-[#169CF9] rounded-lg">
+                      Level: {level} {level >= 1 && emoji.get('fire')}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
             <div className="mt-4 flex justify-between items-center">
               <span className="text-sm text-gray-500">
-                {new Date().toLocaleDateString()}
+                {new Date().toLocaleDateString()} - {xpPerTask} XP per yes
               </span>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm">
+                <Button
+                  size="sm"
+                  onClick={handleDemoYes}
+                  id="rewardId"
+                  className="bg-orange-500 hover:bg-orange-600"
+                >
                   Yes
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-500 hover:text-red-600"
+                >
                   No
                 </Button>
               </div>
@@ -160,6 +210,31 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
           </Card>
         </div>
       </div>
+
+      <GenericModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        title={`You fucking did it! ${emoji.get('rocket')}`}
+      >
+        <div className="flex flex-col justify-center items-start">
+          <span>Goal created successfully! {emoji.get('fire')}</span>
+          <span className="mb-2">
+            Now, you can start to achieve it, just{' '}
+            {<strong className="text-orange-500">fucking do it!</strong>}
+          </span>
+          <Button
+            onClick={() => {
+              setIsOpen(false);
+              onCancel();
+              redirect('/home');
+            }}
+            className="w-full bg-orange-500 hover:bg-orange-600"
+          >
+            Home page
+          </Button>
+        </div>
+      </GenericModal>
+
       {releaseConfeti && <ConfettiPortal />}
     </>
   );
