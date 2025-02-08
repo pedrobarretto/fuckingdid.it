@@ -2,6 +2,7 @@
 
 import FirstLoginModal from '@/components/modal/FirstLoginModal';
 import { Button } from '@/components/ui/button';
+import { Suspense } from 'react';
 
 export default async function Home() {
   return (
@@ -32,7 +33,9 @@ export default async function Home() {
         </div>
       </section>
 
-      <FirstLoginModal />
+      <Suspense>
+        <FirstLoginModal />
+      </Suspense>
     </div>
   );
 }

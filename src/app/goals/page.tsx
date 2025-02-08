@@ -2,9 +2,10 @@
 
 import { createClient } from '@/utils/supabase/server';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
 import BrushLine from '../../assets/brush-line.svg';
 import { GoalsContainer } from './_components/GoalsContainer';
+import { redirect } from 'next/navigation';
+import { ProfilePicture } from './_components/ProfilePicture';
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -42,15 +43,7 @@ export default async function HomePage() {
           </span>
           <Image src={BrushLine} alt="Underline" width={150} height={33} />
         </div>
-        <div className="transition-transform duration-300 hover:scale-110 active:scale-95 cursor-pointer">
-          <Image
-            src={imgUrl}
-            alt={`${username} profile picture`}
-            width={55}
-            height={55}
-            className="rounded-xl"
-          />
-        </div>
+        <ProfilePicture imgUrl={imgUrl} />
       </div>
 
       <GoalsContainer goals={goals.data || []} />

@@ -19,13 +19,13 @@ export function HeaderButton({ isLogedIn }: { isLogedIn: User | null }) {
         {isLogedIn ? 'Logout' : 'Login'}
       </Button>
 
-      {isLogedIn && !pathname.startsWith('/home') && (
+      {isLogedIn && !pathname.startsWith('/goals') && (
         <Button
           className="bg-orange-500 hover:bg-orange-600 text-white"
           variant={'default'}
-          onClick={() => redirect('/home')}
+          onClick={() => redirect('/goals')}
         >
-          Home
+          Goals
         </Button>
       )}
     </div>

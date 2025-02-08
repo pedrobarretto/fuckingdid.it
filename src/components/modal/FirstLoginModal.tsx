@@ -69,15 +69,13 @@ export default function FirstLoginModal() {
   }, [searchParams]);
 
   const resendConfirmationLink = async (formData: ResendFormData) => {
-    const { error, data } = await supabase.auth.resend({
+    const { error } = await supabase.auth.resend({
       type: 'signup',
       email: formData.email,
       options: {
         emailRedirectTo: process.env.NEXT_PUBLIC_BASE_URL,
       },
     });
-    console.log('error: ', error);
-    console.log('data: ', data);
     if (error) {
       toast({
         title: 'Sorry, an error occurred!',

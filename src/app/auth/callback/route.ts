@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 
     if (!error) {
       // If successful, redirect to the 'next' path or home
-      return NextResponse.redirect(`${origin}/home`);
+      return NextResponse.redirect(`${origin}/goals`);
     }
   }
 

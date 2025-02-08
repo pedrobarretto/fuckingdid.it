@@ -8,16 +8,16 @@ export type Json =
 
 export type Goal = {
   avatar: string;
-  created_at: string;
+  created_at?: string;
   days_streaks: number;
-  group_id: string | null;
+  group_id?: string | null;
   id: number;
+  level: number;
   question: string;
   updated_at: string;
   user_id: string;
-  xp: number;
-  level: number;
   week_frequency: number;
+  xp: number;
   xp_by_answer: number;
 };
 
@@ -31,27 +31,27 @@ export type Database = {
           days_streaks: number;
           group_id: string | null;
           id: number;
+          level: number;
           question: string;
           updated_at: string;
           user_id: string;
-          xp: number;
-          level: number;
           week_frequency: number;
+          xp: number;
           xp_by_answer: number;
         };
         Insert: {
-          avatar: string;
+          avatar?: string;
           created_at?: string;
           days_streaks?: number;
           group_id?: string | null;
           id?: number;
-          question: string;
+          level?: number;
+          question?: string;
           updated_at?: string;
           user_id?: string;
+          week_frequency?: number;
           xp?: number;
-          level?: number;
-          week_frequency: number;
-          xp_by_answer: number;
+          xp_by_answer?: number;
         };
         Update: {
           avatar?: string;
@@ -59,13 +59,13 @@ export type Database = {
           days_streaks?: number;
           group_id?: string | null;
           id?: number;
+          level?: number;
           question?: string;
           updated_at?: string;
           user_id?: string;
+          week_frequency?: number;
           xp?: number;
-          level?: number;
-          week_frequency: number;
-          xp_by_answer: number;
+          xp_by_answer?: number;
         };
         Relationships: [];
       };
@@ -74,10 +74,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      email_exists: {
-        Args: {
-          email_address: string;
-        };
+      delete_user: {
+        // Args: {
+        //   email_address: string;
+        // };
         Returns: boolean;
       };
     };

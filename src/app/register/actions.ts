@@ -11,7 +11,7 @@ export async function signup(formData: RegisterFormData) {
     email: formData.email,
     options: {
       shouldCreateUser: true,
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/goals`,
       data: {
         full_name: formData.username,
       },

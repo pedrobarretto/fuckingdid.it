@@ -198,13 +198,13 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
                 >
                   Yes
                 </Button>
-                <Button
+                {/* <Button
                   variant="ghost"
                   size="sm"
                   className="text-red-500 hover:text-red-600"
                 >
                   No
-                </Button>
+                </Button> */}
               </div>
             </div>
           </Card>
@@ -226,11 +226,11 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
             onClick={() => {
               setIsOpen(false);
               onCancel();
-              redirect('/home');
+              redirect('/goals');
             }}
             className="w-full bg-orange-500 hover:bg-orange-600"
           >
-            Home page
+            Check goals
           </Button>
         </div>
       </GenericModal>

@@ -18,7 +18,8 @@ export function GoalsContainer({ goals }: GoalsContainerProps) {
       {isAddingGoal ? (
         <CreateGoalForm onCancel={() => setIsAddingGoal(false)} />
       ) : (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 mb-4">
+          <GoalsList goals={goals} />
           <div
             onClick={() => setIsAddingGoal(true)}
             className="flex items-center flex-col text-center bg-white text-orange-500 rounded-xl p-10 gap-3 hover:cursor-pointer hover:bg-orange-500 hover:text-white transition-hover duration-200"
@@ -26,7 +27,6 @@ export function GoalsContainer({ goals }: GoalsContainerProps) {
             <CirclePlus />
             <span className="font-bold">Create new goal</span>
           </div>
-          <GoalsList goals={goals} />
         </div>
       )}
     </>
