@@ -20,7 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${rubik.className} antialiased bg-[#efefef]`}>
+      <meta
+        name="description"
+        content="Set goals, track your progress, and stay motivated. Earn XP and level up as you complete your goals. Stop procrastinating and just fucking do it!"
+      />
+      <meta
+        name="keywords"
+        content="goal tracker, habit tracker, stop procrastinating, productivity, self-improvement, motivation, achieve goals, fucking do it"
+      />
+      <body
+        className={`${rubik.className} antialiased bg-[#efefef] text-[#333c4c]`}
+      >
         <Toaster />
         <Header />
         {children}
