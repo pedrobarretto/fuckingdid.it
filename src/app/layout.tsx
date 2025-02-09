@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Rubik } from 'next/font/google';
 import './globals.css';
+import { Header } from '@/components/header/Header';
+import { Toaster } from '@/components/ui/toaster';
 
 const rubik = Rubik({
   subsets: ['latin'],
@@ -18,7 +20,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${rubik.className} antialiased`}>{children}</body>
+      <meta
+        name="description"
+        content="Set goals, track your progress, and stay motivated. Earn XP and level up as you complete your goals. Stop procrastinating and just fucking do it!"
+      />
+      <meta
+        name="keywords"
+        content="goal tracker, habit tracker, stop procrastinating, productivity, self-improvement, motivation, achieve goals, fucking do it"
+      />
+      <body
+        className={`${rubik.className} antialiased bg-[#efefef] text-[#333c4c]`}
+      >
+        <Toaster />
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
