@@ -10,7 +10,15 @@ import { useToast } from '@/hooks/use-toast';
 import { redirect } from 'next/navigation';
 
 export function GoalCard({ goal }: { goal: Goal }) {
-  const { reward } = useReward(`rewardId-${goal.id}`, 'confetti');
+  const { reward } = useReward(`rewardId-${goal.id}`, 'confetti', {
+    position: 'absolute',
+    lifetime: 100,
+    angle: 90,
+    // startVelocity: 10,
+    // decay: 0.9,
+    spread: 60,
+    elementCount: 100,
+  });
   const [level, setLevel] = useState(goal.level);
   const [xp, setXp] = useState(goal.xp);
   const [loading, setLoading] = useState(false);
@@ -25,10 +33,11 @@ export function GoalCard({ goal }: { goal: Goal }) {
       if (res.success) {
         setLevel(goal.level + 1);
         setXp(0);
-        toast({
-          title: 'You fucking did it!',
-          description: `Goal successfully updated ${emoji.get('fire')}`,
-          variant: 'success',
+        reward();
+        const levelSound = new Audio('sounds/level-reward.mp3');
+        levelSound.volume = 0.5;
+        levelSound.play().catch((error) => {
+          console.error('Error when play sound: ', error);
         });
       } else {
         toast({
@@ -46,10 +55,10 @@ export function GoalCard({ goal }: { goal: Goal }) {
       });
       if (res.success) {
         setXp(newXp);
-        toast({
-          title: 'You fucking did it!',
-          description: `Goal successfully updated ${emoji.get('fire')}`,
-          variant: 'success',
+        reward();
+        const xpSound = new Audio('sounds/reward-sound.mp3');
+        xpSound.play().catch((error) => {
+          console.error('Error when play sound: ', error);
         });
       } else {
         toast({
@@ -61,13 +70,6 @@ export function GoalCard({ goal }: { goal: Goal }) {
       }
     }
 
-    setTimeout(() => {
-      reward();
-    }, 500);
-    const sogra = new Audio('sounds/sogra.mp3');
-    sogra.play().catch((error) => {
-      console.error('Error when play sound: ', error);
-    });
     setLoading(false);
   };
 
@@ -121,13 +123,6 @@ export function GoalCard({ goal }: { goal: Goal }) {
               'Fuck Yeah'
             )}
           </Button>
-          {/* <Button
-            variant="ghost"
-            size="sm"
-            className="text-red-500 hover:text-red-600"
-          >
-            No
-          </Button> */}
         </div>
       </div>
     </Card>
