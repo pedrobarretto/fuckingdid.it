@@ -8,7 +8,15 @@ import { useState } from 'react';
 import { Loader2, Cog } from 'lucide-react';
 
 export function DemoGoalCard() {
-  const { reward } = useReward('rewardId-homepage', 'confetti');
+  const { reward } = useReward('rewardId-homepage', 'confetti', {
+    position: 'absolute',
+    lifetime: 100,
+    angle: 90,
+    // startVelocity: 10,
+    // decay: 0.9,
+    spread: 60,
+    elementCount: 100,
+  });
   const [level, setLevel] = useState(0);
   const [xp, setXp] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -21,15 +29,20 @@ export function DemoGoalCard() {
       const newLevel = level + 1;
       setLevel(newLevel);
       setXp(0);
+      reward();
+      const levelSound = new Audio('sounds/level-reward.mp3');
+      levelSound.volume = 0.5;
+      levelSound.play().catch((error) => {
+        console.error('Error when play sound: ', error);
+      });
+    } else {
+      reward();
+      const xpSound = new Audio('sounds/reward-sound.mp3');
+      xpSound.play().catch((error) => {
+        console.error('Error when play sound: ', error);
+      });
     }
 
-    setTimeout(() => {
-      reward();
-    }, 500);
-    const sogra = new Audio('sounds/sogra.mp3');
-    sogra.play().catch((error) => {
-      console.error('Error when play sound: ', error);
-    });
     setLoading(false);
   };
 
@@ -45,7 +58,7 @@ export function DemoGoalCard() {
 
       <div className="flex items-center gap-4">
         <span className="text-7xl duration-1000 hover:animate-wiggle hover:cursor-pointer">
-          {emoji.get('fire')}
+          {emoji.get('muscle')}
         </span>
         <div className="flex-1">
           <p className="font-bold text-lg text-orange-500">
@@ -84,13 +97,6 @@ export function DemoGoalCard() {
               'Fuck Yeah'
             )}
           </Button>
-          {/* <Button
-            variant="ghost"
-            size="sm"
-            className="text-red-500 hover:text-red-600"
-          >
-            No
-          </Button> */}
         </div>
       </div>
     </Card>
