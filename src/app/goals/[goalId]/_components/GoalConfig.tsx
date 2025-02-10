@@ -105,16 +105,8 @@ export function GoalConfig({ goals }: { goals: Goal[] }) {
                 disabled
                 className="bg-orange-500 hover:bg-orange-600"
               >
-                Yes
+                Fuck Yeah
               </Button>
-              {/* <Button
-                variant="ghost"
-                size="sm"
-                disabled
-                className="text-red-500 hover:text-red-600"
-              >
-                No
-              </Button> */}
             </div>
           </div>
         </Card>

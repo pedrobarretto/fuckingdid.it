@@ -12,8 +12,6 @@ export function DemoGoalCard() {
     position: 'absolute',
     lifetime: 100,
     angle: 90,
-    // startVelocity: 10,
-    // decay: 0.9,
     spread: 60,
     elementCount: 100,
   });
@@ -28,7 +26,10 @@ export function DemoGoalCard() {
     if (newXp >= 96) {
       const newLevel = level + 1;
       setLevel(newLevel);
-      setXp(0);
+      setXp(100);
+      setTimeout(() => {
+        setXp(0);
+      }, 300);
       reward();
       const levelSound = new Audio('sounds/level-reward.mp3');
       levelSound.volume = 0.5;

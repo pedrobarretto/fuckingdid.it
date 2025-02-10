@@ -14,8 +14,6 @@ export function GoalCard({ goal }: { goal: Goal }) {
     position: 'absolute',
     lifetime: 100,
     angle: 90,
-    // startVelocity: 10,
-    // decay: 0.9,
     spread: 60,
     elementCount: 100,
   });
@@ -28,12 +26,15 @@ export function GoalCard({ goal }: { goal: Goal }) {
     setLoading(true);
     const newXp = xp + goal.xp_by_answer;
     if (newXp >= 96) {
-      const newLevel = goal.level + 1;
+      const newLevel = level + 1;
       const res = await updateGoal({ level: newLevel, xp: 0, id: goal.id });
       if (res.success) {
-        setLevel(goal.level + 1);
-        setXp(0);
         reward();
+        setXp(100);
+        setTimeout(() => {
+          setXp(0);
+        }, 300);
+        setLevel(newLevel);
         const levelSound = new Audio('sounds/level-reward.mp3');
         levelSound.volume = 0.5;
         levelSound.play().catch((error) => {
@@ -54,8 +55,8 @@ export function GoalCard({ goal }: { goal: Goal }) {
         id: goal.id,
       });
       if (res.success) {
-        setXp(newXp);
         reward();
+        setXp(newXp);
         const xpSound = new Audio('sounds/reward-sound.mp3');
         xpSound.play().catch((error) => {
           console.error('Error when play sound: ', error);
@@ -110,18 +111,14 @@ export function GoalCard({ goal }: { goal: Goal }) {
           Last update: {new Date(goal.updated_at).toLocaleDateString()}
         </span>
         <div className="flex gap-2">
+          <div id={`rewardId-${goal.id}`} className="relative left-10" />
           <Button
             size="sm"
-            id={`rewardId-${goal.id}`}
             className="bg-orange-500 hover:bg-orange-600"
             onClick={handleYes}
             disabled={loading}
           >
-            {loading ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              'Fuck Yeah'
-            )}
+            {loading && <Loader2 className="size-4 animate-spin" />} Fuck Yeah
           </Button>
         </div>
       </div>

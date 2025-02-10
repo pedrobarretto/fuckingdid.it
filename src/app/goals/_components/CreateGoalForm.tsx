@@ -28,7 +28,13 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
   const [selected, setSelected] = useState<number>(3);
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(0);
-  const { reward } = useReward('rewardId', 'confetti');
+  const { reward } = useReward('rewardId', 'confetti', {
+    position: 'absolute',
+    lifetime: 100,
+    angle: 90,
+    spread: 60,
+    elementCount: 100,
+  });
   const xpPerTask = Math.floor(100 / selected);
 
   const emojiArray = Object.entries(emojilib).map(([emojiKey, keywords]) => {
@@ -56,12 +62,7 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
     setReleaseConfeti(true);
 
     const yeah = new Audio('/sounds/yeah.mp3');
-    const caprio = new Audio('/sounds/dicaprio-line.mp3');
-    caprio.volume = 1;
     yeah.volume = 0.2;
-    caprio.play().catch((error) => {
-      console.error('Error when play sound: ', error);
-    });
     yeah.play().catch((error) => {
       console.error('Error when play sound: ', error);
     });
@@ -70,19 +71,25 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
   };
 
   const handleDemoYes = () => {
-    setTimeout(() => {
-      reward();
-    }, 500);
-    const sogra = new Audio('sounds/sogra.mp3');
-    sogra.play().catch((error) => {
-      console.error('Error when play sound: ', error);
-    });
-
     const newXp = xp + xpPerTask;
     if (newXp >= 96) {
+      reward();
+      const levelSound = new Audio('sounds/level-reward.mp3');
+      levelSound.volume = 0.5;
+      levelSound.play().catch((error) => {
+        console.error('Error when play sound: ', error);
+      });
       setLevel(level + 1);
-      setXp(0);
+      setXp(100);
+      setTimeout(() => {
+        setXp(0);
+      }, 300);
     } else {
+      reward();
+      const xpSound = new Audio('sounds/reward-sound.mp3');
+      xpSound.play().catch((error) => {
+        console.error('Error when play sound: ', error);
+      });
       setXp(newXp);
     }
   };
@@ -196,15 +203,8 @@ export default function CreateGoalForm({ onCancel }: CreateGoalFormProps) {
                   id="rewardId"
                   className="bg-orange-500 hover:bg-orange-600"
                 >
-                  Yes
+                  Fuck Yeah
                 </Button>
-                {/* <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-red-500 hover:text-red-600"
-                >
-                  No
-                </Button> */}
               </div>
             </div>
           </Card>

@@ -8,6 +8,7 @@ import { createClient } from '@/utils/supabase/server';
 export async function Header() {
   const db = await createClient();
   const isLogedIn = await db.auth.getUser();
+  console.log(isLogedIn);
 
   return (
     <div className="w-full">

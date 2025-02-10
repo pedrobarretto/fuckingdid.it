@@ -1,7 +1,5 @@
 'use server';
 
-import FirstLoginModal from '@/components/modal/FirstLoginModal';
-import { Suspense } from 'react';
 import { DemoGoalCard } from './goals/_components/DemoGoalCard';
 import { Linkedin, Github } from 'lucide-react';
 import * as emoji from 'node-emoji';
@@ -133,10 +131,6 @@ export default async function Home() {
           © 2025 FuckingDid.it - Your Goal Achievement Platform
         </p>
       </footer>
-
-      <Suspense>
-        <FirstLoginModal />
-      </Suspense>
     </main>
   );
 }
